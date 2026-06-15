@@ -1,0 +1,92 @@
+table Sheet1
+	lineageTag: 5cccc824-3604-4979-99a4-17327cbc6013
+
+	column Date
+		dataType: string
+		lineageTag: 99580f04-cf91-407c-b5d4-ca789befcdf0
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column2
+		dataType: string
+		lineageTag: 38cdc5c7-f978-4601-8818-74fb1a96eb2f
+		summarizeBy: none
+		sourceColumn: Column2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column3
+		dataType: string
+		lineageTag: 75ecec74-3f50-4e14-88ec-b50e34ec2a30
+		summarizeBy: none
+		sourceColumn: Column3
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column4
+		dataType: string
+		lineageTag: 45138c39-b00e-4840-b4c1-b280c47eeae1
+		summarizeBy: none
+		sourceColumn: Column4
+
+		annotation SummarizationSetBy = Automatic
+
+	column Vehicle_Type
+		dataType: string
+		lineageTag: a74a9a68-d9c7-4c05-9883-647a34a69301
+		summarizeBy: none
+		sourceColumn: Vehicle_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg Distance'
+		dataType: double
+		lineageTag: c52cd3ce-d6f3-408b-b6bb-dfbbcfec4562
+		summarizeBy: sum
+		sourceColumn: Avg Distance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column7
+		dataType: string
+		lineageTag: e572ab25-bbdd-4b7d-b5a6-0524709c7169
+		summarizeBy: none
+		sourceColumn: Column7
+
+		annotation SummarizationSetBy = Automatic
+
+	column Booking_Status
+		dataType: string
+		lineageTag: cbd2b6bf-5b65-493e-9dd1-b5525ff0a601
+		summarizeBy: none
+		sourceColumn: Booking_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column9
+		dataType: double
+		lineageTag: f61e11f0-9c1c-461e-8481-925fbb044034
+		summarizeBy: sum
+		sourceColumn: Column9
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Sheet1 = m
+		mode: import
+		source =
+				let
+				  Source = Excel.Workbook(File.Contents("C:\Users\system1028\Downloads\Bookings-100000-Rows.xlsx"), null, true),
+				  #"Navigation 1" = Source{[Item = "Sheet1", Kind = "Sheet"]}[Data],
+				  #"Promoted headers" = Table.PromoteHeaders(#"Navigation 1", [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"Date", type text}, {"Vehicle_Type", type text}, {"Avg Distance", type number}, {"Booking_Status", type text}, {"Column9", type number}}, "en-US")
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+
